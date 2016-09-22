@@ -1,5 +1,12 @@
 import * as types from './types';
 
+export const setError = (error = null) => {
+  return {
+    type: types.SET_ERROR,
+    error
+  };
+};
+
 export const setIsLoading = (isLoading = true) => {
   return {
     type: types.SET_IS_LOADING,

@@ -14,7 +14,8 @@ module.exports = {
         loader: "babel-loader",
         exclude: [/node_modules/, /public/],
         query: {
-          presets: ["es2015", "react", "stage-0"]
+          presets: ["es2015", "react", "stage-0"],
+          plugins: ["transform-decorators-legacy"]
         }
       },
       {
@@ -24,14 +25,21 @@ module.exports = {
       }
     ]
   },
-  // plugins: [
-  //   new webpack.DefinePlugin({
-  //     "process.env": {
-  //        NODE_ENV: JSON.stringify("production")
-  //      }
-  //   }),
-  //   new webpack.optimize.UglifyJsPlugin({
-  //     compress: { warnings: false }
-  //   })
-  // ]
+  plugins: []
 };
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.plugins.push(
+    new webpack.DefinePlugin({
+      "process.env": {
+         NODE_ENV: JSON.stringify("production")
+       }
+    })
+  );
+
+  module.exports.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    })
+  );
+}

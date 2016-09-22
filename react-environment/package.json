@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "src/main.js",
   "scripts": {
-    "build": "./node_modules/.bin/webpack --config ./webpack.config.js --progress",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./node_modules/.bin/webpack --config ./webpack.config.js --progress"
   },
   "keywords": [],
   "author": "",

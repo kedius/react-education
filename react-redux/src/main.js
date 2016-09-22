@@ -5,16 +5,17 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 
+import logger from './utils/logger';
 import reducers from './reducers';
 import sagas from './sagas';
 
 import App from './components/app';
-import ContactList from './components/contact-list';
+import ContactsList from './components/contacts-list';
 import ContactForm from './components/contact-form';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducers, applyMiddleware(
-  sagaMiddleware
+  sagaMiddleware, logger
 ));
 
 sagaMiddleware.run(sagas);
@@ -23,9 +24,8 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={App}>
-        <IndexRoute component={ContactList} />
-        <Route path="list" component={ContactList} />
-        <Route path="add" component={ContactForm} />
+        <IndexRoute component={ContactsList} />
+        <Route path="create" component={ContactForm} />
       </Route>
     </Router>
   </Provider>,

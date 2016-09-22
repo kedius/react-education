@@ -1,37 +1,30 @@
 import { takeEvery } from 'redux-saga';
 import { put } from 'redux-saga/effects';
+import { browserHistory } from 'react-router';
 
+import ApiFetch from '../utils/api-fetch';
 import * as types from '../actions/contacts/types';
 import * as actions from '../actions/contacts';
 
 function* getContactsList(action) {
   yield put(actions.setIsLoading(true));
 
-  try {
-    const { contacts } = yield fetch('http://localhost:3000/contacts', {
-      method: 'GET'
-    });
+  const { contacts } = yield new ApiFetch().get('/contacts', { wait: 1000 });
 
-    yield put(actions.setContactsList(contacts));
-  } catch (exception) {
-    console.warn(exception);
-  }
-
-  yield put(action.setIsLoading(false));
+  yield put(actions.setContactsList(contacts));
+  yield put(actions.setIsLoading(false));
 }
 
 function* createContact(action) {
   const { contact: newContact } = action;
 
   try {
-    const { contact } = yield fetch('http://localhost:3000/contacts', {
-      method: 'POST',
-      body: JSON.stringify(newContact)
-    });
+    const { contact } = yield new ApiFetch().post('/contacts', newContact);
 
-    put(actions.addContactToList(contact));
+    yield put(actions.addContactToList(contact));
+    browserHistory.push('/');
   } catch (exception) {
-    console.warn(exception);
+    yield put(actions.setError(exception.error));
   }
 }
 
@@ -39,14 +32,11 @@ function* updateContact(action) {
   const { contact: updatedContact } = action;
 
   try {
-    const { contact } = yield fetch(`http://localhost:3000/contacts/${updatedContact.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(updatedContact)
-    });
+    const { contact } = yield new ApiFetch().put(`/contacts/${updatedContact.id}`, updatedContact);
 
-    put(actions.updateContactInList(contact));
+    yield put(actions.updateContactInList(contact));
   } catch (exception) {
-    console.warn(exception);
+    yield put(actions.setError(exception.error));
   }
 }
 
@@ -54,13 +44,10 @@ function* deleteContact(action) {
   const { contactId } = action;
 
   try {
-    yield fetch(`http://localhost:3000/contacts/${contactId}`, {
-      method: 'DELETE'
-    });
-
+    yield new ApiFetch().delete(`/contacts/${contactId}`);
     yield put(actions.deleteContactFromList(contactId));
   } catch (exception) {
-    console.warn(exception);
+    yield put(actions.setError(exception.error));
   }
 }
 
