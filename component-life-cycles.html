@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Component Life Cycles!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+  </head>
+  <body>
+
+    <div id="app"></div>
+
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+
+          this.state = {
+            counter: 0,
+            mounted: false
+          };
+
+          this.handleMount = this.handleMount.bind(this);
+          this.handleCounterIncrement = this.handleCounterIncrement.bind(this);
+          this.handleUnmount = this.handleUnmount.bind(this);
+        }
+
+        handleMount(e) {
+          e.preventDefault();
+          this.setState({ mounted: true });
+        }
+
+        handleCounterIncrement(e) {
+          e.preventDefault();
+          this.setState({ counter: this.state.counter + 1 });
+        }
+
+        handleUnmount(e) {
+          e.preventDefault();
+          this.setState({ mounted: false });
+        }
+
+        render() {
+          if (this.state.mounted) {
+            return (
+              <div>
+                <button onClick={this.handleCounterIncrement}>Change Props</button>
+                <Component counter={this.state.counter} />
+                <button onClick={this.handleUnmount}>Unmount</button>
+              </div>
+            )
+          }
+
+          return <button onClick={this.handleMount}>Mount</button>;
+        }
+      }
+
+      class Component extends React.Component {
+        constructor(props) {
+          log('constructor', 'Gray');
+
+          super(props);
+
+          this.state = {
+            timestamp: Date.now()
+          };
+
+          this.handleTimestampChange = this.handleTimestampChange.bind(this);
+        }
+
+        componentWillMount() {
+          log('componentWillMount', 'Orange');
+        }
+
+        componentDidMount() {
+          log('componentDidMount', 'Purple');
+        }
+
+        componentWillReceiveProps() {
+          log('componentWillReceiveProps', 'HotPink');
+        }
+
+        shouldComponentUpdate() {
+          log('shouldComponentUpdate', 'SandyBrown');
+
+          return true;
+        }
+
+        componentWillUpdate() {
+          log('componentWillUpdate', 'CornflowerBlue');
+        }
+
+        componentDidUpdate() {
+          log('componentDidUpdate', 'IndianRed');
+        }
+
+        componentWillUnmount() {
+          log('componentWillUnmount', 'Indigo');
+        }
+
+        handleTimestampChange(e) {
+          e.preventDefault();
+          this.setState({ timestamp: Date.now() });
+        }
+
+        render() {
+          log('render', 'Aquamarine');
+
+          return (
+            <div>
+              <div>Counter: {this.props.counter}</div>
+              <div>Timestamp: {this.state.timestamp}</div>
+              <button onClick={this.handleTimestampChange}>Change State</button>
+            </div>
+          );
+        }
+      }
+
+      function log(name, color) {
+        let perfomance = (Math.round(window.performance.now()) / 1000).toFixed(3);
+        console.log(`%c[${perfomance}] ${name}`, `background-color: ${color||'red'}; font-size: 18px; padding: 0 5px; color: #FFF`);
+      }
+
+      ReactDOM.render(
+        <App />,
+        document.getElementById('app')
+      );
+    </script>
+  </body>
+</html>
