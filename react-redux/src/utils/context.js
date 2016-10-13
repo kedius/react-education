@@ -1,5 +1,9 @@
 export default contextTypes => DecoratedComponent => {
-  DecoratedComponent.contextTypes = contextTypes;
+  DecoratedComponent.contextTypes = Object.assign(
+    {},
+    DecoratedComponent.contextTypes,
+    contextTypes
+  );
 
   return DecoratedComponent;
 };

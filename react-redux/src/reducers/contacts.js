@@ -17,7 +17,7 @@ const reducers = {
   },
 
   [types.SET_CONTACTS_LIST]: (state, action) => {
-    return state.set('list', Immutable.fromJS(action.contacts));
+    return state.set('list', Immutable.fromJS(action.res.contacts));
   },
 
   [types.ADD_CONTACT_TO_LIST]: (state, action) => {

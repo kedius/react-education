@@ -60,7 +60,7 @@ class ContactItem extends Component {
 
   renderViewMode() {
     const { contact } = this.props;
-    
+
     return (
       <li className="contact-item">
         <div className="image">

@@ -66,7 +66,7 @@ class ContactsList extends Component {
 
   render() {
     return (
-      <ul className="contacts-list">
+      <ul className="contacts-list" ref="list">
         <li className="search-place">
           <input className="search" type="text" onChange={this.handleSearch} />
         </li>

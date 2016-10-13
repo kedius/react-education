@@ -44,7 +44,10 @@ export const deleteContactFromList = contactId => {
 
 export const getContactsList = () => {
   return {
-    type: types.GET_CONTACTS_LIST
+    type: types.SET_CONTACTS_LIST,
+    promise: fetch('http://localhost:3000/contacts', {
+      method: 'GET'
+    })
   };
 };
 

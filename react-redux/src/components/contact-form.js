@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import context from '../utils/context';
 import { createContact, updateContact } from '../actions/contacts';
 import '../styles/contact-form.less';
