@@ -62,8 +62,7 @@ class ContactForm extends Component {
               name="name"
               placeholder="Name"
               value={this.state.name}
-              onChange={this.handleChange}
-              required />
+              onChange={this.handleChange} />
           </div>
           <div>
             <input

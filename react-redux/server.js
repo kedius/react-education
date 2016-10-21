@@ -32,7 +32,7 @@ router.post('/contacts', (req, res) => {
     res.json({ success: true, contact });
   } else {
     res.statusCode = 400;
-    res.json({ success: false, error: 'Bad Request' });
+    res.json({ success: false, message: 'Bad Request' });
   }
 });
 
@@ -45,11 +45,11 @@ router.put('/contacts/:id', (req, res) => {
       res.json({ success: true, contact: contacts[contactIndex] });
     } else {
       res.statusCode = 400;
-      res.json({ success: false, error: 'Bad Request' });
+      res.json({ success: false, message: 'Bad Request' });
     }
   } else {
     res.statusCode = 404;
-    res.json({ success: false, error: 'Contact Not Found' });
+    res.json({ success: false, message: 'Contact Not Found' });
   }
 });
 
@@ -61,7 +61,7 @@ router.delete('/contacts/:id', (req, res) => {
     res.json({ success: true });
   } else {
     res.statusCode = 404;
-    res.json({ success: false, error: 'Contact Not Found' });
+    res.json({ success: false, message: 'Contact Not Found' });
   }
 });
 

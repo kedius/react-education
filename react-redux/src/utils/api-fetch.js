@@ -41,10 +41,7 @@ class ApiFetch {
   }
 
   prepareResponse(response) {
-    return new Promise((resolve, reject) => {
-      response.json()
-        .then(response.ok ? resolve : reject);
-    });
+    return response;
   }
 
   querySerializer(object) {

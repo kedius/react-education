@@ -13,30 +13,55 @@ const reducers = {
   },
 
   [types.SET_IS_LOADING]: (state, action) => {
-    return state.set('isLoading', action.isLoading);
+    return state.set('isLoading', action.loading);
   },
 
-  [types.SET_CONTACTS_LIST]: (state, action) => {
-    return state.set('list', Immutable.fromJS(action.res.contacts));
+  [types.GET_CONTACTS_LIST]: (state, action) => {
+    const { contacts, error } = action.result;
+
+    if (error) {
+      return state.set('error', error);
+    }
+
+    return state.set('list', Immutable.fromJS(contacts));
   },
 
-  [types.ADD_CONTACT_TO_LIST]: (state, action) => {
-    const updatedList = state.get('list').push(Immutable.fromJS(action.contact));
+  [types.CREATE_CONTACT]: (state, action) => {
+    const { contact, error } = action.result;
+
+    if (error) {
+      return state.set('error', error);
+    }
+
+    const updatedList = state.get('list')
+      .push(Immutable.fromJS(contact));
 
     return state.set('list', updatedList);
   },
 
-  [types.UPDATE_CONTACT_IN_LIST]: (state, action) => {
-    const updatedList = state.get('list').map(contact => {
-      return contact.get('id') === action.contact.id
-        ? Immutable.fromJS(action.contact)
-        : contact;
+  [types.UPDATE_CONTACT]: (state, action) => {
+    const { contact, error } = action.result;
+
+    if (error) {
+      return state.set('error', error);
+    }
+
+    const updatedList = state.get('list').map(_contact => {
+      return _contact.get('id') === contact.id
+        ? Immutable.fromJS(contact)
+        : _contact;
     });
 
     return state.set('list', updatedList);
   },
 
-  [types.DELETE_CONTACT_FROM_LIST]: (state, action) => {
+  [types.DELETE_CONTACT]: (state, action) => {
+    const { error } = action.result;
+
+    if (error) {
+      return state.set('error', error);
+    }
+
     const updatedList = state.get('list')
       .filter(contact => contact.get('id') !== action.contactId);
 

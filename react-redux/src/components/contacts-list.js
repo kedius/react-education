@@ -48,7 +48,7 @@ class ContactsList extends Component {
     const { value: search } = e.target;
     const contacts = this.props.contacts.get('list').filter(contact => {
       return contact.get('name').toLowerCase().indexOf(search.toLowerCase()) !== -1
-        || contact.get('phoneNumber').toLowerCase().indexOf(search.toLowerCase()) !== -1 ;
+        || contact.get('phoneNumber').toLowerCase().indexOf(search.toLowerCase()) !== -1;
     });
 
     this.setState({ contacts });
@@ -57,6 +57,10 @@ class ContactsList extends Component {
   renderContacts() {
     if (this.props.contacts.get('isLoading')) {
       return <li>Loading...</li>;
+    }
+
+    if (this.state.contacts.size === 0) {
+      return <li>Nothing to show.</li>;
     }
 
     return this.state.contacts.map(contact => {

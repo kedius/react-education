@@ -5,20 +5,16 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 
-import logger from './utils/logger';
+import middlewares from './middlewares';
 import reducers from './reducers';
-import sagas from './sagas';
 
 import App from './components/app';
 import ContactsList from './components/contacts-list';
 import ContactForm from './components/contact-form';
 
-const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducers, applyMiddleware(
-  sagaMiddleware, logger
+  middlewares.fetcher, middlewares.logger
 ));
-
-sagaMiddleware.run(sagas);
 
 ReactDOM.render(
   <Provider store={store}>
